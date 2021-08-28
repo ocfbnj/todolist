@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  todolist
-//
-//  Created by bytedance on 2021/8/29.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
