@@ -1,30 +1,52 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private var todolist: UITableView = UITableView()
-    private var todolistDataSource: DataSource = DataSource()
+    enum MenuState {
+        case opened
+        case closed
+    }
+    
+    private var menuState: MenuState = .closed
+    private var menuVC = MenuViewController()
+    private var homeVC = HomeViewController()
+    private var navVC: UINavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        view.backgroundColor = .systemBackground
+        // Menu
+        addChild(menuVC)
+        view.addSubview(menuVC.view)
         
-        todolist.translatesAutoresizingMaskIntoConstraints = false
-        todolist.separatorStyle = .none
-        todolist.dataSource = todolistDataSource
-        
-        var constraints = [NSLayoutConstraint]()
-        constraints.append(todolist.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20))
-        constraints.append(todolist.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20))
-        constraints.append(todolist.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8))
-        constraints.append(todolist.centerXAnchor.constraint(equalTo: view.centerXAnchor))
-        constraints.append(todolist.centerYAnchor.constraint(equalTo: view.centerYAnchor))
-        
-        view.addSubview(todolist)
-        NSLayoutConstraint.activate(constraints)
+        // Home
+        homeVC.delegate = self
+        let navVC = UINavigationController(rootViewController: homeVC)
+        addChild(navVC)
+        view.addSubview(navVC.view)
+        self.navVC = navVC
+        navVC.view.backgroundColor = UIColor(red: 243/255.0, green: 245/255.0, blue: 254/255.0, alpha: 1)
     }
-
-
 }
 
+extension ViewController: HomeViewControllerDelegate {
+    func didTapMenuButton() {
+        switch menuState {
+        case .closed:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                self.navVC?.view.frame.origin.x = self.homeVC.view.frame.size.width - 100
+            } completion: { done in
+                if done {
+                    self.menuState = .opened
+                }
+            }
+        case .opened:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+                self.navVC?.view.frame.origin.x = 0
+            } completion: { done in
+                if done {
+                    self.menuState = .closed
+                }
+            }
+        }
+    }
+}

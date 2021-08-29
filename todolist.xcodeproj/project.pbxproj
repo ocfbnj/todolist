@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B45EFE026DB92AD002E1935 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B45EFDF26DB92AD002E1935 /* HomeViewController.swift */; };
+		2B45EFE226DB9788002E1935 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B45EFE126DB9788002E1935 /* MenuViewController.swift */; };
 		2B63C70126DAB1AA000FEB79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63C70026DAB1AA000FEB79 /* AppDelegate.swift */; };
 		2B63C70326DAB1AA000FEB79 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63C70226DAB1AA000FEB79 /* SceneDelegate.swift */; };
 		2B63C70526DAB1AA000FEB79 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63C70426DAB1AA000FEB79 /* ViewController.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B45EFDF26DB92AD002E1935 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		2B45EFE126DB9788002E1935 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		2B63C6FD26DAB1AA000FEB79 /* todolist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = todolist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B63C70026DAB1AA000FEB79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B63C70226DAB1AA000FEB79 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 				2B63C70926DAB1AB000FEB79 /* Assets.xcassets */,
 				2B63C70B26DAB1AB000FEB79 /* LaunchScreen.storyboard */,
 				2B63C71426DAB49C000FEB79 /* Views */,
+				2B45EFDF26DB92AD002E1935 /* HomeViewController.swift */,
+				2B45EFE126DB9788002E1935 /* MenuViewController.swift */,
 			);
 			path = todolist;
 			sourceTree = "<group>";
@@ -155,7 +161,9 @@
 				2B63C70526DAB1AA000FEB79 /* ViewController.swift in Sources */,
 				2B63C71826DAB4E5000FEB79 /* Task.swift in Sources */,
 				2B63C70126DAB1AA000FEB79 /* AppDelegate.swift in Sources */,
+				2B45EFE026DB92AD002E1935 /* HomeViewController.swift in Sources */,
 				2B63C70326DAB1AA000FEB79 /* SceneDelegate.swift in Sources */,
+				2B45EFE226DB9788002E1935 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
