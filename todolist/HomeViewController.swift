@@ -7,6 +7,8 @@ protocol HomeViewControllerDelegate: AnyObject {
 class HomeViewController: UIViewController {
     private var todolist: UITableView = UITableView()
     private var todolistDataSource: DataSource = DataSource()
+    private var heightConstraint: NSLayoutConstraint?
+    
     weak var delegate: HomeViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -26,12 +28,19 @@ class HomeViewController: UIViewController {
         var constraints = [NSLayoutConstraint]()
         constraints.append(todolist.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20))
         constraints.append(todolist.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20))
-        constraints.append(todolist.heightAnchor.constraint(greaterThanOrEqualToConstant: 400))
+        let constraint = todolist.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
+        constraints.append(constraint)
+        heightConstraint = constraint
         constraints.append(todolist.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor))
         constraints.append(todolist.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20))
 
         view.addSubview(todolist)
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.heightConstraint?.constant = todolist.contentSize.height
+        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseIn, animations: { self.view.layoutIfNeeded() }, completion: nil)
     }
     
     @objc func didTapMenuButton() {
