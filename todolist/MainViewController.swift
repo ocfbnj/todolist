@@ -1,6 +1,6 @@
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     enum MenuState {
         case opened
         case closed
@@ -9,6 +9,7 @@ class ViewController: UIViewController {
     private var menuState: MenuState = .closed
     private var menuVC = MenuViewController()
     private var homeVC = HomeViewController()
+    private var addItemVC = AddItemViewController()
     private var navVC: UINavigationController?
     
     override func viewDidLoad() {
@@ -19,15 +20,20 @@ class ViewController: UIViewController {
         view.addSubview(menuVC.view)
         
         // Home
-        homeVC.delegate = self
+        homeVC.homeViewControllerDelegate = self
         let navVC = UINavigationController(rootViewController: homeVC)
         addChild(navVC)
         view.addSubview(navVC.view)
         self.navVC = navVC
+        
+        // Add Item
+        addChild(addItemVC)
+        view.addSubview(addItemVC.view)
+        addItemVC.view.isHidden = true
     }
 }
 
-extension ViewController: HomeViewControllerDelegate {
+extension MainViewController: HomeViewControllerDelegate {
     func didTapMenuButton() {
         switch menuState {
         case .closed:
@@ -47,5 +53,9 @@ extension ViewController: HomeViewControllerDelegate {
                 }
             }
         }
+    }
+    
+    func didTapAddButton() {
+        addItemVC.view.isHidden = false
     }
 }

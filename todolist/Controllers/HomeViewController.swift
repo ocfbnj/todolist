@@ -2,15 +2,17 @@ import UIKit
 
 protocol HomeViewControllerDelegate: AnyObject {
     func didTapMenuButton()
+    func didTapAddButton()
 }
 
 class HomeViewController: UIViewController {
     private var todolist: UITableView = UITableView()
     private var scrollView: UIScrollView = UIScrollView()
+
     private var todolistDataSource: DataSource?
     private var heightConstraint: NSLayoutConstraint?
     
-    weak var delegate: HomeViewControllerDelegate?
+    weak var homeViewControllerDelegate: HomeViewControllerDelegate?
     
     override func viewDidLoad() {
         title = "今天"
@@ -20,6 +22,10 @@ class HomeViewController: UIViewController {
                                                            style: .done,
                                                            target: self,
                                                            action: #selector(didTapMenuButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"),
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(didTapAddButton))
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.layer.cornerRadius = 5
@@ -70,6 +76,10 @@ class HomeViewController: UIViewController {
     }
     
     @objc func didTapMenuButton() {
-        delegate?.didTapMenuButton()
+        homeViewControllerDelegate?.didTapMenuButton()
+    }
+    
+    @objc func didTapAddButton() {
+        homeViewControllerDelegate?.didTapAddButton()
     }
 }
