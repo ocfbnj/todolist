@@ -24,7 +24,6 @@ class ViewController: UIViewController {
         addChild(navVC)
         view.addSubview(navVC.view)
         self.navVC = navVC
-        navVC.view.backgroundColor = UIColor(red: 243/255.0, green: 245/255.0, blue: 254/255.0, alpha: 1)
     }
 }
 
