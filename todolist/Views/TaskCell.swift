@@ -19,7 +19,7 @@ class TaskCell: UITableViewCell {
         doneButton.setImage(image, for: .normal)
         titleLabel.text = title
         
-        dateLabel.text = "今天"
+        dateLabel.text = getDateString(dueDate)
         dateLabel.textColor = .gray
         dateLabel.font = dateLabel.font.withSize(13)
         
@@ -48,5 +48,42 @@ class TaskCell: UITableViewCell {
     
     @objc func didTapDoneButton(_ sender: UIButton) {
         doneButtonAction?()
+    }
+}
+
+extension TaskCell {
+    static let thisYearDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "M月d日"
+        return dateFormatter
+    }()
+    
+    static let defaultDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "y年M月d日"
+        return dateFormatter
+    }()
+    
+    private func getDateString(_ date: Date) -> String {
+        if Locale.current.calendar.isDateInToday(date) {
+            return "今天"
+        }
+        
+        if Locale.current.calendar.isDateInTomorrow(date) {
+            return "明天"
+        }
+        
+        if Locale.current.calendar.isDateInYesterday(date) {
+            return "昨天"
+        }
+        
+        let now = Date()
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        if calendar.component(.year, from: now) == year {
+            return TaskCell.thisYearDateFormatter.string(from: date)
+        }
+        
+        return TaskCell.defaultDateFormatter.string(from: date)
     }
 }

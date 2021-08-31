@@ -7,6 +7,14 @@ class DataSource: NSObject {
     init(_ updateTodoList: @escaping UpdateTodolist) {
         self.updateTodoList = updateTodoList
     }
+    
+    func add(_ task: Task) {
+        Task.testData.insert(task, at: 0)
+    }
+    
+    private func delete(_ index: Int) {
+        Task.testData.remove(at: index)
+    }
 }
 
 extension DataSource: UITableViewDataSource {
@@ -34,8 +42,8 @@ extension DataSource: UITableViewDataSource {
             return
         }
         
-        Task.testData.remove(at: indexPath.row)
-        tableView.performBatchUpdates({tableView.deleteRows(at: [indexPath], with: .automatic)},
-                                      completion: {_ in self.updateTodoList()})
+        delete(indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        updateTodoList()
     }
 }

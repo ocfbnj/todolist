@@ -60,17 +60,6 @@ class HomeViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func updateTodolist() {
-        self.heightConstraint?.constant = todolist.contentSize.height
-        UIView.animate(withDuration: 0.33,
-                       delay: 0,
-                       options: .curveEaseIn,
-                       animations: { self.scrollView.layoutIfNeeded() }) {
-            _ in
-            self.todolist.reloadData()
-        }
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         updateTodolist()
     }
@@ -81,5 +70,22 @@ class HomeViewController: UIViewController {
     
     @objc func didTapAddButton() {
         homeViewControllerDelegate?.didTapAddButton()
+    }
+    
+    func addTask(_ task: Task) {
+        todolistDataSource?.add(task)
+        todolist.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        updateTodolist()
+    }
+    
+    private func updateTodolist() {
+        self.heightConstraint?.constant = todolist.contentSize.height
+        UIView.animate(withDuration: 0.33,
+                       delay: 0,
+                       options: .curveEaseIn,
+                       animations: { self.scrollView.layoutIfNeeded() }) {
+            _ in
+            self.todolist.reloadData()
+        }
     }
 }

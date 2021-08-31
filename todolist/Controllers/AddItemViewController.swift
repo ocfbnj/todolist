@@ -1,16 +1,23 @@
 import UIKit
 
+protocol AddItemViewControllerDelegate: AnyObject {
+    func didTapDoneButton(_ task: Task)
+}
+
 class AddItemViewController: UIViewController {
     private var header = UIView()
     private var closeButton = UIButton()
     
     private var grayView = UIView()
     private var datePicker = UIDatePicker()
+    private var showPicker = false
 
     private var footer = UIView()
     private var textField = UITextField()
     private var dateButton = UIButton()
     private var doneButton = UIButton()
+    
+    var delegate: AddItemViewControllerDelegate?
     
 //    private var footerHeightConstraint: NSLayoutConstraint?
     
@@ -103,7 +110,8 @@ class AddItemViewController: UIViewController {
     }
     
     @objc func didTapDateButton(_ sender: UIButton) {
-        datePicker.isHidden = false
+        showPicker.toggle()
+        datePicker.isHidden = !showPicker
 //        footerHeightConstraint?.constant = 0
 //        UIView.animate(withDuration: 0.22,
 //                       delay: 0,
@@ -118,8 +126,9 @@ class AddItemViewController: UIViewController {
         guard let title = textField.text else {
             return
         }
-        let date = datePicker.date
-        print("title: ", title, ", date: ", date)
+        
+        let task = Task(id: UUID().uuidString, title: title, dueDate: datePicker.date, notes: "")
+        delegate?.didTapDoneButton(task)
         
         hidden()
     }
@@ -128,6 +137,7 @@ class AddItemViewController: UIViewController {
         view.isHidden = true
         textField.text = nil
         datePicker.isHidden = true
+        showPicker = false
 //        footerHeightConstraint?.constant = 135
     }
 }

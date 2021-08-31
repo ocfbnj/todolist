@@ -27,6 +27,7 @@ class MainViewController: UIViewController {
         self.navVC = navVC
         
         // Add Item
+        addItemVC.delegate = self
         addChild(addItemVC)
         view.addSubview(addItemVC.view)
         addItemVC.view.isHidden = true
@@ -57,5 +58,11 @@ extension MainViewController: HomeViewControllerDelegate {
     
     func didTapAddButton() {
         addItemVC.view.isHidden = false
+    }
+}
+
+extension MainViewController: AddItemViewControllerDelegate {
+    func didTapDoneButton(_ task: Task) {
+        homeVC.addTask(task)
     }
 }
