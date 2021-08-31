@@ -15,30 +15,29 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Menu
-        addChild(menuVC)
-        view.addSubview(menuVC.view)
-        
-        // Home
+        menuVC.menuViewControllerDelegate = self
         homeVC.homeViewControllerDelegate = self
+        addItemVC.addItemViewControllerDelegate = self
+        
         let navVC = UINavigationController(rootViewController: homeVC)
-        addChild(navVC)
-        view.addSubview(navVC.view)
         self.navVC = navVC
         
-        // Add Item
-        addItemVC.delegate = self
+        addChild(menuVC)
+        addChild(navVC)
         addChild(addItemVC)
+        
+        view.addSubview(menuVC.view)
+        view.addSubview(navVC.view)
         view.addSubview(addItemVC.view)
         addItemVC.view.isHidden = true
     }
 }
 
-extension MainViewController: HomeViewControllerDelegate {
-    func didTapMenuButton() {
+extension MainViewController {
+    private func toggleSideMenu() {
         switch menuState {
         case .closed:
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
                 self.navVC?.view.frame.origin.x = self.homeVC.view.frame.size.width - 100
             } completion: { done in
                 if done {
@@ -46,7 +45,7 @@ extension MainViewController: HomeViewControllerDelegate {
                 }
             }
         case .opened:
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
                 self.navVC?.view.frame.origin.x = 0
             } completion: { done in
                 if done {
@@ -54,6 +53,12 @@ extension MainViewController: HomeViewControllerDelegate {
                 }
             }
         }
+    }
+}
+
+extension MainViewController: HomeViewControllerDelegate {
+    func didTapMenuButton() {
+        toggleSideMenu()
     }
     
     func didTapAddButton() {
@@ -64,5 +69,14 @@ extension MainViewController: HomeViewControllerDelegate {
 extension MainViewController: AddItemViewControllerDelegate {
     func didTapDoneButton(_ task: Task) {
         homeVC.addTask(task)
+    }
+}
+
+extension MainViewController: MenuViewControllerDelegate {
+    func didTapMenuItem(_ itemIndex: Int) {
+        guard let level = TaskListDataSource.FilterLevel(rawValue: itemIndex) else { return }
+        homeVC.changeList(level)
+        homeVC.updateTodolist()
+        toggleSideMenu()
     }
 }

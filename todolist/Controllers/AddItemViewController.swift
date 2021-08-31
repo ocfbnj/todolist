@@ -17,7 +17,7 @@ class AddItemViewController: UIViewController {
     private var dateButton = UIButton()
     private var doneButton = UIButton()
     
-    var delegate: AddItemViewControllerDelegate?
+    weak var addItemViewControllerDelegate: AddItemViewControllerDelegate?
     
 //    private var footerHeightConstraint: NSLayoutConstraint?
     
@@ -128,7 +128,7 @@ class AddItemViewController: UIViewController {
         }
         
         let task = Task(id: UUID().uuidString, title: title, dueDate: datePicker.date, notes: "")
-        delegate?.didTapDoneButton(task)
+        addItemViewControllerDelegate?.didTapDoneButton(task)
         
         hidden()
     }

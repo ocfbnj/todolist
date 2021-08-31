@@ -9,7 +9,7 @@ class HomeViewController: UIViewController {
     private var todolist: UITableView = UITableView()
     private var scrollView: UIScrollView = UIScrollView()
 
-    private var todolistDataSource: DataSource?
+    private var todolistDataSource: TaskListDataSource?
     private var heightConstraint: NSLayoutConstraint?
     
     weak var homeViewControllerDelegate: HomeViewControllerDelegate?
@@ -30,7 +30,7 @@ class HomeViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.layer.cornerRadius = 5
         
-        todolistDataSource = DataSource(updateTodolist)
+        todolistDataSource = TaskListDataSource(updateTodolist)
         todolist.translatesAutoresizingMaskIntoConstraints = false
         todolist.separatorStyle = .none
         todolist.dataSource = todolistDataSource
@@ -73,12 +73,24 @@ class HomeViewController: UIViewController {
     }
     
     func addTask(_ task: Task) {
-        todolistDataSource?.add(task)
-        todolist.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-        updateTodolist()
+        if let index = todolistDataSource?.add(task) {
+            todolist.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            updateTodolist()
+        }
     }
     
-    private func updateTodolist() {
+    func changeList(_ level: TaskListDataSource.FilterLevel) {
+        todolistDataSource?.filterLevel = level
+        switch level {
+        case .all:
+            title = "收集箱"
+        case .today:
+            title = "今天"
+        }
+    }
+    
+    func updateTodolist() {
+        self.todolist.reloadData()
         self.heightConstraint?.constant = todolist.contentSize.height
         UIView.animate(withDuration: 0.25,
                        delay: 0,
