@@ -80,7 +80,7 @@ class HomeViewController: UIViewController {
     
     private func updateTodolist() {
         self.heightConstraint?.constant = todolist.contentSize.height
-        UIView.animate(withDuration: 0.33,
+        UIView.animate(withDuration: 0.25,
                        delay: 0,
                        options: .curveEaseIn,
                        animations: { self.scrollView.layoutIfNeeded() }) {
