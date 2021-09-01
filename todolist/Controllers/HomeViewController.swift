@@ -50,6 +50,6 @@ class HomeViewController: UITableViewController {
             title = "今天"
         }
         
-        tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        tableView.reloadSections(IndexSet(integersIn: 0..<TaskListDataSource.sectionsCount), with: .automatic)
     }
 }

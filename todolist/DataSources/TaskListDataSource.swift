@@ -23,32 +23,79 @@ class TaskListDataSource: NSObject {
         return filteredTasks.firstIndex(where: {$0.id == task.id})
     }
     
-    func delete(_ cellIndex: Int) {
-        guard let index = indexOf(id: filteredTasks[cellIndex].id) else { return }
+    func delete(_ indexPath: IndexPath) {
+        guard let index = rawIndexOf(id: tasksOfSections(indexPath.section)[indexPath.row].id) else { return }
         Task.testData.remove(at: index)
     }
     
-    func indexOf(id taskId: String) -> Int? {
+    func rawIndexOf(id taskId: String) -> Int? {
         return Task.testData.firstIndex(where: {$0.id == taskId})
     }
 }
 
+extension TaskListDataSource {
+    enum Section: Int, CaseIterable {
+        case unfinished
+        case finished
+    }
+
+    static let sectionsCount = TaskListDataSource.Section.allCases.count
+    
+    private func tasksOfSections(_ section: Int) -> [Task] {
+        switch section {
+        case 0:
+            return filteredTasks.filter({ !$0.isComplete })
+        case 1:
+            return filteredTasks.filter({ $0.isComplete })
+        default:
+            return [Task]()
+        }
+    }
+    
+    private func titleOfSections(_ section: Int) -> String? {
+        switch section {
+        case 0:
+            return nil
+        case 1:
+            return tasksOfSections(1).count > 0 ? "已完成" : nil
+        default:
+            return nil
+        }
+    }
+}
+
 extension TaskListDataSource: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Self.sectionsCount
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredTasks.count
+        return tasksOfSections(section).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TaskCell
-        let data = filteredTasks[indexPath.row]
+        
+        let data = tasksOfSections(indexPath.section)[indexPath.row]
         cell.configure(title: data.title,
                        dueDate: data.dueDate,
                        notes: data.notes,
                        isComplete: data.isComplete) {
-            if let index = self.indexOf(id: self.filteredTasks[indexPath.row].id) {
-                Task.testData[index].isComplete.toggle()
+            guard let rawIndex = self.rawIndexOf(id: data.id) else { return }
+            Task.testData[rawIndex].isComplete.toggle()
+
+            let section = Task.testData[rawIndex].isComplete ? 1 : 0
+            guard let row = self.tasksOfSections(section).firstIndex(where: { $0.id == data.id }) else { return }
+            let to = IndexPath(row: row, section: section)
+            
+            tableView.performBatchUpdates({
+                tableView.moveRow(at: indexPath, to: to)
+            }) { done in
+                if done {
+//                    tableView.reloadRows(at: [to], with: .none)
+                    tableView.reloadData() // TODO
+                }
             }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
         }
 
         return cell
@@ -59,7 +106,11 @@ extension TaskListDataSource: UITableViewDataSource {
             return
         }
         
-        delete(indexPath.row)
+        delete(indexPath)
         tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return titleOfSections(section)
     }
 }
