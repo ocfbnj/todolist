@@ -76,7 +76,6 @@ extension MainViewController: MenuViewControllerDelegate {
     func didTapMenuItem(_ itemIndex: Int) {
         guard let level = TaskListDataSource.FilterLevel(rawValue: itemIndex) else { return }
         homeVC.changeList(level)
-        homeVC.updateTodolist()
         toggleSideMenu()
     }
 }

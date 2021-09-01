@@ -1,14 +1,10 @@
 import UIKit
 
 class TaskListDataSource: NSObject {
-    typealias UpdateTodolist = () -> Void
-
     enum FilterLevel: Int {
         case today
         case all
     }
-    
-    let updateTodoList: UpdateTodolist
 
     var filterLevel: FilterLevel = .today
     var filteredTasks: [Task] {
@@ -20,10 +16,6 @@ class TaskListDataSource: NSObject {
                     .filter({ Locale.current.calendar.isDateInToday($0.dueDate) })
                     .sorted(by: { $0.dueDate < $1.dueDate })
         }
-    }
-
-    init(_ updateTodoList: @escaping UpdateTodolist) {
-        self.updateTodoList = updateTodoList
     }
     
     func add(_ task: Task) -> Int? {
@@ -69,6 +61,5 @@ extension TaskListDataSource: UITableViewDataSource {
         
         delete(indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
-        updateTodoList()
     }
 }
