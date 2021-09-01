@@ -57,7 +57,6 @@ extension TaskListDataSource: UITableViewDataSource {
                 Task.testData[index].isComplete.toggle()
             }
             tableView.reloadRows(at: [indexPath], with: .automatic)
-            tableView.reloadData() // TODO
         }
 
         return cell
