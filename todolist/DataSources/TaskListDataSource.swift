@@ -28,6 +28,15 @@ class TaskListDataSource: NSObject {
         Task.testData.remove(at: index)
     }
     
+    func indexPathOfTask(_ task: Task) -> IndexPath {
+        let section = task.isComplete ? 1 : 0
+        guard let row = self.tasksOfSections(section).firstIndex(where: { $0.id == task.id }) else {
+            fatalError()
+        }
+        
+        return IndexPath(row: row, section: section)
+    }
+    
     func rawIndexOf(id taskId: String) -> Int? {
         return Task.testData.firstIndex(where: {$0.id == taskId})
     }
@@ -82,18 +91,16 @@ extension TaskListDataSource: UITableViewDataSource {
                        notes: data.notes,
                        isComplete: data.isComplete) {
             guard let rawIndex = self.rawIndexOf(id: data.id) else { return }
+            
+            let from = self.indexPathOfTask(Task.testData[rawIndex])
             Task.testData[rawIndex].isComplete.toggle()
-
-            let section = Task.testData[rawIndex].isComplete ? 1 : 0
-            guard let row = self.tasksOfSections(section).firstIndex(where: { $0.id == data.id }) else { return }
-            let to = IndexPath(row: row, section: section)
+            let to = self.indexPathOfTask(Task.testData[rawIndex])
             
             tableView.performBatchUpdates({
-                tableView.moveRow(at: indexPath, to: to)
+                tableView.moveRow(at: from, to: to)
             }) { done in
                 if done {
-//                    tableView.reloadRows(at: [to], with: .none)
-                    tableView.reloadData() // TODO
+                    tableView.reloadRows(at: [to], with: .automatic)
                 }
             }
         }
