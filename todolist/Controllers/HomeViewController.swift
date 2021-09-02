@@ -80,9 +80,9 @@ class HomeViewController: UINavigationController {
         taskListDataSource?.filterLevel = level
         switch level {
         case .all:
-            title = "收集箱"
+            tableVC.title = "收集箱"
         case .today:
-            title = "今天"
+            tableVC.title = "今天"
         }
         
         tableVC.tableView.reloadSections(IndexSet(integersIn: 0..<TaskListDataSource.sectionsCount), with: .automatic)
