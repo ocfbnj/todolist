@@ -33,6 +33,8 @@ class MainViewController: UIViewController {
 
 extension MainViewController {
     fileprivate func openMenu() {
+        homeVC.fadeInGrayView()
+
         menuVC.view.isHidden = false
         menuVC.view.frame.origin.x = -menuVC.view.frame.size.width
         UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseInOut) {
@@ -53,16 +55,16 @@ extension MainViewController {
                 self.menuState = .closed
             }
         }
+        
+        homeVC.fadeOutGrayView()
     }
     
     private func toggleSideMenu() {
         switch menuState {
         case .closed:
-            homeVC.fadeInGrayView()
             openMenu()
         case .opened:
             closeMenu()
-            homeVC.fadeOutGrayView()
         }
     }
 }
@@ -74,6 +76,10 @@ extension MainViewController: HomeViewControllerDelegate {
     
     func didTapAddButton() {
         addItemVC.view.isHidden = false
+    }
+    
+    func didTapGrayView() {
+        closeMenu()
     }
 }
 

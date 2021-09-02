@@ -3,6 +3,7 @@ import UIKit
 protocol HomeViewControllerDelegate: AnyObject {
     func didTapMenuButton()
     func didTapAddButton()
+    func didTapGrayView()
 }
 
 class HomeViewController: UINavigationController {
@@ -34,13 +35,15 @@ class HomeViewController: UINavigationController {
         
         grayView.backgroundColor = .black
         grayView.alpha = 0
+        grayView.isHidden = true
         grayView.translatesAutoresizingMaskIntoConstraints = false
         grayView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         grayView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         grayView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         grayView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        grayView.isHidden = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapGrayView))
+        grayView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @objc func didTapMenuButton() {
@@ -49,6 +52,10 @@ class HomeViewController: UINavigationController {
     
     @objc func didTapAddButton() {
         homeViewControllerDelegate?.didTapAddButton()
+    }
+    
+    @objc func didTapGrayView() {
+        homeViewControllerDelegate?.didTapGrayView()
     }
     
     func addTask(_ task: Task) {
