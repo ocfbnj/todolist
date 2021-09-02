@@ -42,8 +42,12 @@ class HomeViewController: UINavigationController {
         grayView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         grayView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapGrayView))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapGrayView(_:)))
         grayView.addGestureRecognizer(tapGestureRecognizer)
+        
+        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeView(_:)))
+        swipeGestureRecognizer.direction = .right
+        view.addGestureRecognizer(swipeGestureRecognizer)
     }
     
     @objc func didTapMenuButton() {
@@ -54,8 +58,16 @@ class HomeViewController: UINavigationController {
         homeViewControllerDelegate?.didTapAddButton()
     }
     
-    @objc func didTapGrayView() {
-        homeViewControllerDelegate?.didTapGrayView()
+    @objc func didTapGrayView(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            homeViewControllerDelegate?.didTapGrayView()
+        }
+    }
+    
+    @objc func didSwipeView(_ gestureRecognizer : UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            didTapMenuButton()
+        }
     }
     
     func addTask(_ task: Task) {

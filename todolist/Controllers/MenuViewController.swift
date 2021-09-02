@@ -22,6 +22,7 @@ class MenuViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.delegate = self
+        tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
                 
         var constraints = [NSLayoutConstraint]()
         
@@ -32,11 +33,21 @@ class MenuViewController: UIViewController {
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate(constraints)
+        
+        let tapGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeView(_:)))
+        tapGestureRecognizer.direction = .left
+        view.addGestureRecognizer(tapGestureRecognizer)
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         view.frame.size.width = Self.sideMenuWidth
+    }
+    
+    @objc func didSwipeView(_ gestureRecognizer : UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            menuViewControllerDelegate?.didTapMenuItem(tableView.indexPathForSelectedRow?.row ?? 0)
+        }
     }
 }
 
