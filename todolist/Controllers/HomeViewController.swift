@@ -7,6 +7,7 @@ protocol HomeViewControllerDelegate: AnyObject {
 
 class HomeViewController: UINavigationController {
     private let tableVC = UITableViewController()
+    private let grayView = UIView()
     private var taskListDataSource: TaskListDataSource?
     weak var homeViewControllerDelegate: HomeViewControllerDelegate?
     
@@ -28,6 +29,18 @@ class HomeViewController: UINavigationController {
         tableVC.tableView.dataSource = taskListDataSource
         tableVC.tableView.separatorStyle = .none
         tableVC.tableView.register(TaskCell.self, forCellReuseIdentifier: "TaskCell")
+        
+        view.addSubview(grayView)
+        
+        grayView.backgroundColor = .black
+        grayView.alpha = 0
+        grayView.translatesAutoresizingMaskIntoConstraints = false
+        grayView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        grayView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        grayView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        grayView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        grayView.isHidden = true
     }
     
     @objc func didTapMenuButton() {
@@ -54,5 +67,22 @@ class HomeViewController: UINavigationController {
         }
         
         tableVC.tableView.reloadSections(IndexSet(integersIn: 0..<TaskListDataSource.sectionsCount), with: .automatic)
+    }
+    
+    func fadeInGrayView() {
+        grayView.isHidden = false
+        UIView.animate(withDuration: 0.33) {
+            self.grayView.alpha = 0.5
+        }
+    }
+    
+    func fadeOutGrayView() {
+        UIView.animate(withDuration: 0.33) {
+            self.grayView.alpha = 0
+        } completion: { done in
+            if done {
+                self.grayView.isHidden = true
+            }
+        }
     }
 }

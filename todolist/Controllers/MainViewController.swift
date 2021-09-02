@@ -58,9 +58,11 @@ extension MainViewController {
     private func toggleSideMenu() {
         switch menuState {
         case .closed:
+            homeVC.fadeInGrayView()
             openMenu()
         case .opened:
             closeMenu()
+            homeVC.fadeOutGrayView()
         }
     }
 }
