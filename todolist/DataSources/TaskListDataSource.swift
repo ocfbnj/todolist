@@ -20,7 +20,7 @@ class TaskListDataSource: NSObject {
     
     func add(_ task: Task) -> Int? {
         Task.testData.append(task)
-        return filteredTasks.firstIndex(where: {$0.id == task.id})
+        return tasksOfSections(0).firstIndex(where: {$0.id == task.id})
     }
     
     func delete(_ indexPath: IndexPath) {
