@@ -26,7 +26,8 @@ class TaskCell: UITableViewCell {
         var constraints = [NSLayoutConstraint]()
         
         constraints.append(doneButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor))
-        constraints.append(doneButton.widthAnchor.constraint(equalToConstant: 20))
+        constraints.append(doneButton.widthAnchor.constraint(equalToConstant: 30))
+        constraints.append(doneButton.heightAnchor.constraint(equalToConstant: 30))
         constraints.append(doneButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15))
         
         constraints.append(titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor))
@@ -46,7 +47,7 @@ class TaskCell: UITableViewCell {
         doneButtonAction = action
         
         let image = isComplete ? UIImage(systemName: "circle.fill") : UIImage(systemName: "circle")
-        doneButton.setImage(image, for: .normal)
+        doneButton.setBackgroundImage(image, for: .normal)
         titleLabel.text = title
         
         dateLabel.text = getDateString(dueDate)
