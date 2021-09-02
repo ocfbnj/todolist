@@ -12,8 +12,6 @@ class MainViewController: UIViewController {
     private var addItemVC = AddItemViewController()
     private var navVC: UINavigationController?
     
-    static let sideMenuWidth = CGFloat(300)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,14 +30,8 @@ class MainViewController: UIViewController {
         view.addSubview(menuVC.view)
         view.addSubview(addItemVC.view)
         
-        menuVC.view.frame.size.width = Self.sideMenuWidth
         menuVC.view.isHidden = true
         addItemVC.view.isHidden = true
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        menuVC.view.frame.size.width = Self.sideMenuWidth
     }
 }
 

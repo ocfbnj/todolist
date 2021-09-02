@@ -9,10 +9,13 @@ class MenuViewController: UIViewController {
     let menuListDateSource = MenuListDataSource()
     weak var menuViewControllerDelegate: MenuViewControllerDelegate?
     
+    private static let sideMenuWidth = CGFloat(300)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+        view.frame.size.width = Self.sideMenuWidth
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: MenuListDataSource.menuItemCellIdentifier)
         tableView.dataSource = menuListDateSource
@@ -31,6 +34,10 @@ class MenuViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        view.frame.size.width = Self.sideMenuWidth
+    }
 }
 
 extension MenuViewController: UITableViewDelegate {
