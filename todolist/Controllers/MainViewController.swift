@@ -10,7 +10,6 @@ class MainViewController: UIViewController {
     private var menuVC = MenuViewController()
     private var homeVC = HomeViewController()
     private var addItemVC = AddItemViewController()
-    private var navVC: UINavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,14 +18,11 @@ class MainViewController: UIViewController {
         homeVC.homeViewControllerDelegate = self
         addItemVC.addItemViewControllerDelegate = self
         
-        let navVC = UINavigationController(rootViewController: homeVC)
-        self.navVC = navVC
-        
-        addChild(navVC)
+        addChild(homeVC)
         addChild(menuVC)
         addChild(addItemVC)
         
-        view.addSubview(navVC.view)
+        view.addSubview(homeVC.view)
         view.addSubview(menuVC.view)
         view.addSubview(addItemVC.view)
         

@@ -5,26 +5,29 @@ protocol HomeViewControllerDelegate: AnyObject {
     func didTapAddButton()
 }
 
-class HomeViewController: UITableViewController {
+class HomeViewController: UINavigationController {
+    private let tableVC = UITableViewController()
     private var taskListDataSource: TaskListDataSource?
     weak var homeViewControllerDelegate: HomeViewControllerDelegate?
     
     override func viewDidLoad() {
-        title = "今天"
-        view.backgroundColor = UIColor(red: 243/255.0, green: 245/255.0, blue: 254/255.0, alpha: 1)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.dash"),
-                                                           style: .done,
-                                                           target: self,
-                                                           action: #selector(didTapMenuButton))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"),
-                                                            style: .done,
-                                                            target: self,
-                                                            action: #selector(didTapAddButton))
+        pushViewController(tableVC, animated: true)
+        
+        tableVC.title = "今天"
+        tableVC.view.backgroundColor = UIColor(red: 243/255.0, green: 245/255.0, blue: 254/255.0, alpha: 1)
+        tableVC.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.dash"),
+                                                                   style: .done,
+                                                                   target: self,
+                                                                   action: #selector(didTapMenuButton))
+        tableVC.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"),
+                                                                    style: .done,
+                                                                    target: self,
+                                                                    action: #selector(didTapAddButton))
 
         taskListDataSource = TaskListDataSource()
-        tableView.dataSource = taskListDataSource
-        tableView.separatorStyle = .none
-        tableView.register(TaskCell.self, forCellReuseIdentifier: "TaskCell")
+        tableVC.tableView.dataSource = taskListDataSource
+        tableVC.tableView.separatorStyle = .none
+        tableVC.tableView.register(TaskCell.self, forCellReuseIdentifier: "TaskCell")
     }
     
     @objc func didTapMenuButton() {
@@ -37,7 +40,7 @@ class HomeViewController: UITableViewController {
     
     func addTask(_ task: Task) {
         if let index = taskListDataSource?.add(task) {
-            tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            tableVC.tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         }
     }
     
@@ -50,6 +53,6 @@ class HomeViewController: UITableViewController {
             title = "今天"
         }
         
-        tableView.reloadSections(IndexSet(integersIn: 0..<TaskListDataSource.sectionsCount), with: .automatic)
+        tableVC.tableView.reloadSections(IndexSet(integersIn: 0..<TaskListDataSource.sectionsCount), with: .automatic)
     }
 }
